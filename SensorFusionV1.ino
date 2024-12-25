@@ -119,27 +119,15 @@ int getSmokeAverage() {
 }
 
 void printSensorData(float temperature, float humidity, const char* motionStatus, const char* smokeStatus) {
-  Serial.println("=================================");
-  if (!isnan(temperature)) {
-    Serial.print("Temperature: ");
-    Serial.print(temperature);
-    Serial.println("°C");
-  } else {
-    Serial.println("Temperature: Error reading temperature!");
-  }
-
-  if (!isnan(humidity)) {
-    Serial.print("Humidity: ");
-    Serial.print(humidity);
-    Serial.println("%");
-  } else {
-    Serial.println("Humidity: Error reading humidity!");
-  }
-
-  Serial.print("Motion Status: ");
-  Serial.println(motionStatus);
-
-  Serial.print("Smoke and Gas Status: ");
-  Serial.println(smokeStatus);
-  Serial.println("=================================");
+  // Create JSON format string
+  Serial.print("{");
+  Serial.print("\"temperature\":");
+  Serial.print(isnan(temperature) ? "null" : String(temperature));
+  Serial.print(",\"humidity\":");
+  Serial.print(isnan(humidity) ? "null" : String(humidity));
+  Serial.print(",\"motionDetected\":");
+  Serial.print(strcmp(motionStatus, "Motion is Detected!") == 0 ? "true" : "false");
+  Serial.print(",\"smokeDetected\":");
+  Serial.print(strcmp(smokeStatus, "Smoke is Detected!") == 0 ? "true" : "false");
+  Serial.println("}");
 }

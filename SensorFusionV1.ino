@@ -15,7 +15,7 @@ bool pirMotionDetected = false;
 unsigned long pirMotionTimer = 0;
 
 // Smoke sensor variables
-const int SMOKE_THRESHOLD = 225;
+const int SMOKE_THRESHOLD = 215;
 const int SMOKE_HYSTERESIS = 5;
 #define SAMPLE_SIZE 10
 int smokeSamples[SAMPLE_SIZE];

@@ -79,8 +79,8 @@ void loop() {
     digitalWrite(BELL_PIN, HIGH); // Activate alarm
     smokeDetected = true;
     smokeAlarmTimer = millis(); // Start the alarm timer
-  } else if ((smokeDetected && millis() - smokeAlarmTimer >= ALARM_DURATION) || 
-             (smokeAverage <= SMOKE_THRESHOLD - SMOKE_HYSTERESIS && smokeDetected)) {
+  } else if (smokeDetected && millis() - smokeAlarmTimer >= ALARM_DURATION) {
+    // Only turn off the alarm after 10 seconds, regardless of smoke level
     digitalWrite(LED_PIN, HIGH); // LED off
     digitalWrite(BELL_PIN, LOW); // Deactivate alarm
     smokeDetected = false;

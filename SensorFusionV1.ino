@@ -15,13 +15,15 @@ bool pirMotionDetected = false;
 unsigned long pirMotionTimer = 0;
 
 // Smoke sensor variables
-const int SMOKE_THRESHOLD = 215;
+const int SMOKE_THRESHOLD = 210;
 const int SMOKE_HYSTERESIS = 5;
-#define SAMPLE_SIZE 10
+#define SAMPLE_SIZE 3             // Reduced from 10 to 3 for faster response
 int smokeSamples[SAMPLE_SIZE];
 int smokeIndex = 0;
 int smokeTotal = 0;
 bool smokeDetected = false;
+unsigned long smokeAlarmTimer = 0;    // Timer for alarm duration
+const unsigned long ALARM_DURATION = 10000; // 10 seconds in milliseconds
 
 // DHT sensor variables
 #define DHTTYPE DHT22
@@ -76,7 +78,9 @@ void loop() {
     digitalWrite(LED_PIN, LOW); // LED on
     digitalWrite(BELL_PIN, HIGH); // Activate alarm
     smokeDetected = true;
-  } else if (smokeAverage <= SMOKE_THRESHOLD - SMOKE_HYSTERESIS && smokeDetected) {
+    smokeAlarmTimer = millis(); // Start the alarm timer
+  } else if ((smokeDetected && millis() - smokeAlarmTimer >= ALARM_DURATION) || 
+             (smokeAverage <= SMOKE_THRESHOLD - SMOKE_HYSTERESIS && smokeDetected)) {
     digitalWrite(LED_PIN, HIGH); // LED off
     digitalWrite(BELL_PIN, LOW); // Deactivate alarm
     smokeDetected = false;
